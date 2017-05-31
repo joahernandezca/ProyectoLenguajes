@@ -1,5 +1,10 @@
 grammar prueba;
 
+//Símbolo inicial
+model
+ : MODEL bloq ENDMODEL
+ ;
+
 //Lista de identificadores
 list_of_ids : ID (COMMA ID)* | ;
 
@@ -105,6 +110,8 @@ funcion
 
 
 COMMENT : ('#' ~[\r\n]*  |  '/*' .*? '*/') -> skip;
+MODEL : 'MODEL';
+ENDMODEL : 'ENDMODEL';
 O : '||';
 Y : '&&';
 THEN : 'then';
