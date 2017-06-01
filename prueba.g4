@@ -105,13 +105,27 @@ funct_sent : DEF type ID LF_PAREN list_of_ids RG_PAREN bloq ;
 proc_sent : DEF ID LF_PAREN list_of_ids RG_PAREN bloq ;
 
 //Sentencias de función
-funcion
- : LF_BRACE propot_sec SEMICOLON RG_BRACE;
+function : LF_BRACE propot_sec SEMICOLON RG_BRACE;
 
+//Minimize
+minimize : param_list;
+
+//Maximize
+maximize : param_list;
+
+//Restrictions
+restriction : ID simple_exp op=( MINOR_THAN | GREATER_THAN | MINOR | GREATER) simple_exp
+
+//Var
+var : ID expresion
+
+//Parameter
+
+param : ID expresion 
 
 COMMENT : ('#' ~[\r\n]*  |  '/*' .*? '*/') -> skip;
 MODEL : 'MODEL';
-ENDMODEL : 'ENDMODEL';
+END : 'ENDMODEL';
 O : '||';
 Y : '&&';
 THEN : 'then';
@@ -135,6 +149,7 @@ STRING : 'string';
 BOOL : 'boolean';
 SEMICOLON : ';';
 ASSING : '=';
+PARAMETER_ASSING : ':='
 LF_PAREN : '(';
 RG_PAREN : ')';
 LF_BRACE : '{';
@@ -156,4 +171,10 @@ ID : [a-zA-Z_] [a-zA-Z_0-9]*;
 INTEGER : '[0-9]+';
 REAL : '[0-9]* '.' [0-9]*';
 WS : '[ \t\r\n] -> skip';
+MINIMIZE : 'minimize';
+MAXIMIZE : 'maximize';
+REST : 'restriction';
+SOLVE : 'solve';
+VARIBLE : 'var';
+PARAMETER : 'param';
 OTHER : .;
