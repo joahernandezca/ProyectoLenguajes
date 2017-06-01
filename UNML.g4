@@ -171,6 +171,7 @@ DIFF : 'diff';
 INTER : 'inter';
 SYMDIFF : 'symdiff';
 SET : 'set';
+SUBJECT_TO : 'subject to';
 MINIMIZE : 'minimize';
 MAXIMIZE : 'maximize';
 REST : 'restriction';
