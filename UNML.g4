@@ -1,30 +1,31 @@
-grammar prueba; //Le podemos poner el nombre del programa ya
+//UN Modeling Language
+grammar UNML; //Le podemos poner el nombre del programa ya
 
-//Símbolo inicial
+//Initial symbol
 model
  : MODEL bloq ENDMODEL
  ;
 
-//Lista de identificadores
+//List of ID's
 list_of_ids : ID (COMMA ID)* | ;
 
-//Expresiones simples
-simple_exp : LF_PAREN simple_exp RG_PAREN | (op=(ADD | MINUS))? term (op2=(ADD| MINUS | O) term)* | term;
+//Simple expressions
+simple_exp : LF_PAREN simple_exp RG_PAREN | (op=(ADD | MINUS))? term (op2=(ADD| MINUS | OR) term)* | term;
 
-//Expresiones compuestas
+//Compound expression
 expression : LF_PAREN expression RG_PAREN | simple_exp op=(EQUAL | DIFFERENT  | MINOR_THAN | GREATER_THAN | MINOR | GREATER) simple_exp
  | LF_PAREN simple_exp RG_PAREN
  | simple_exp
  | NOT expression;
 
-//Definición de variable
+//Variable definition
 variable
  : ID set | ID ;
 
-//Definición de término
-term : LF_PAREN term  RG_PAREN | factor (op=(MULT | DIV | MOD | Y | O | EXP) factor)* | NOT term  | factor;
+//Term definition
+term : LF_PAREN term  RG_PAREN | factor (op=(MULT | DIV | MOD | AND | OR | EXP) factor)* | NOT term  | factor;
 
-//Definición de factor
+//Factor definition
 factor
  : INTEGER
  | REAL
@@ -41,27 +42,24 @@ factor
  | LF_PAREN expression RG_PAREN
  ;
 
-//Lista de parámetros
+//List of parameters
 param_list : LF_PAREN (expression | variable | ID) (COMMA (expression | variable | ID ))* RG_PAREN | LF_PAREN RG_PAREN ;
 
-//Definición de conjunto
+//Set definition
 set : LF_BRACE (expression (COMMA expression )*)? RG_BRACE ;
 
-//Identificador de tipo de retorno
+//Type of return
 type : INT | DOUBLE | STRING | BOOL;
 
-//Bloque
+//Bloq
 bloq : LF_BRACE RG_BRACE | LF_BRACE propot_sec RG_BRACE ;
 
-//Secuenciación
+//Secuenciation
 propot_sec : (propot)* propot;
 
-//Conjunto de posibles sentencias
+//Possible sentences
 propot : RETURN expression SEMICOLON
- | funct_sent   //ya podriamos quitar las funciones y procedimientos
- | proc_sent
  | if_sent
- | seleccionar_senten
  | while_sent
  | for
  | do_while_sent
@@ -71,85 +69,54 @@ propot : RETURN expression SEMICOLON
  | OTHER {System.err.println("Caracter desconocido: " + $OTHER.text);}
  ;
 
-//Modo de asignación
+//Assigment mode
 assigment : ID ASSING expression #asigNum
  | ID ASSING set #asigVec ;
 
-//Selección IF
+//Parameter assigment
+parameter_assigment : ID PARAMETER_ASSING param ;
+
+//If condition
 if_sent : IF cond_bloq (ELSE IF cond_bloq )* (ELSE THEN? bloq )?;
 
-//Expresión a evaluar y bloque de sentencias a ejecutar
+//Conditional bloq
 cond_bloq : expression THEN? bloq;
 
-//Iteración WHILE
+//While iteration
 while_sent : WHILE cond_bloq ;
 
-//Iteración DO WHILE
+//Do while iteration
 do_while_sent : DO bloq  WHILE expression ;
 
-//Selección SWITCH
-seleccionar_senten : SELECCIONAR ID LF_BRACE casos RG_BRACE ;
-
-//Bloque de casos del SWITCH
-casos : CASO expression TWO_POINTS propot_sec (BREAK SEMICOLON)? casos     #casosGen
-| DEFECTO TWO_POINTS propot_sec #casosDef ;
-
-//Iteración FOR
+//For iteration
 for : FOR assigment (COMMA assigment )* SEMICOLON expression SEMICOLON assigment (COMMA assigment )* bloq
  | FOR LF_PAREN assigment (COMMA assigment)* SEMICOLON expression SEMICOLON assigment (COMMA assigment )* RG_PAREN bloq ;
-
-//Función
-funct_sent : DEF type ID LF_PAREN list_of_ids RG_PAREN bloq ;
-
-//Procedimiento
-proc_sent : DEF ID LF_PAREN list_of_ids RG_PAREN bloq ;
 
 //Sentencias de función
 function : LF_BRACE propot_sec SEMICOLON RG_BRACE;
 
 //Minimize
-minimize : param_list;
-                                 creo que param_list no nos va a recibir funcions del tipo x+y+z.....*....>><< numero, x+y+z.....*....>><< numero
+minimize : param_list;   //creo que param_list no nos va a recibir funcions del tipo x+y+z.....*....>><< numero, x+y+z.....*....>><< numero
+
 //Maximize
 maximize : param_list;
 
 //Restrictions
-restriction : ID simple_exp op=( MINOR_THAN | GREATER_THAN | MINOR | GREATER) simple_exp
+restriction : ID simple_exp op=( MINOR_THAN | GREATER_THAN | MINOR | GREATER) simple_exp;
 
 //Var
-var : ID expresion
+var : VARIABLE ID expression;
                             //las dos tienen la misma forma, asi que parecen equivalentes cunado deberian diferenciarce
 //Parameter
+param : PARAMETER ID expression;
 
-param : ID expresion 
-
+//Comments
 COMMENT : ('#' ~[\r\n]*  |  '/*' .*? '*/') -> skip;
-MODEL : 'MODEL';
-END : 'ENDMODEL';
-O : '||';
-Y : '&&';
-THEN : 'then';
-EQUAL : '==';
-DIFFERENT : '!=';
-GREATER : '>';
-MINOR : '<';
-GREATER_THAN : '>=';
-MINOR_THAN : '<=';
-ADD : '+';
-MINUS : '-';
-MULT : '*';
-DIV : '/';
-MOD : '%';
-EXP : '^';
-NOT : '!';
-RETURN : 'return';
-INT : 'int';
-DOUBLE : 'double';
-STRING : 'string';
-BOOL : 'boolean';
+
+//Special characters
 SEMICOLON : ';';
 ASSING : '=';
-PARAMETER_ASSING : ':='
+PARAMETER_ASSING : ':=';
 LF_PAREN : '(';
 RG_PAREN : ')';
 LF_BRACE : '{';
@@ -158,23 +125,66 @@ LF_SPARE : '[';
 RG_SPARE : ']';
 COMMA : ',';
 TWO_POINTS : ':';
-TRUE : 'true';
-FALSE : 'false';
-NULL : 'nnul';
+WS : [ \t\r\n] -> skip;
+OTHER : .;
+
+//Reserved words
+MODEL : 'MODEL';
+ENDMODEL : 'ENDMODEL';
+SET : 'set';
+SIMPLEX : 'simplex';
+MINIMIZE : 'minimize';
+MAXIMIZE : 'maximize';
+RESTRICTION : 'rest';
+SOLVE : 'solve';
+VARIABLE : 'var';
+PARAMETER : 'param';
+RETURN : 'return';
+INT : 'int';
+DOUBLE : 'double';
+STRING : 'string';
+BOOL : 'boolean';
+NULL : 'null';
+
+//control structures
 IF : 'if';
 ELSE : 'else';
+THEN : 'then';
 WHILE : 'while';
 BREAK : 'break';
 DO : 'do';
 FOR : 'for';
+SELECT : 'select';
+CASE : 'case';
+
+//Relational operators
+EQUAL : '==';
+DIFFERENT : '!=' | '<>';
+GREATER : '>';
+MINOR : '<';
+GREATER_THAN : '>=';
+MINOR_THAN : '<=';
+
+//Logic operators
+AND: 'and' | '&&';
+OR: 'or' | '||';
+NOT : 'not' | '!' ;
+TRUE : 'true';
+FALSE : 'false';
+
+//Aritmetic operators
+ADD : '+';
+MINUS : '-';
+MULT : '*';
+DIV : '/';
+MOD : '%';
+EXP : '^' | '**';
+
+//Data types
+SIGN : '-' | '+';
+CHAR : [a-zA-Z];
+DIGIT : [0-9];
 ID : [a-zA-Z_] [a-zA-Z_0-9]*;
-INTEGER : '[0-9]+';
-REAL : '[0-9]* '.' [0-9]*';
-WS : '[ \t\r\n] -> skip';
-MINIMIZE : 'minimize';
-MAXIMIZE : 'maximize';
-REST : 'restriction';
-SOLVE : 'solve';
-VARIBLE : 'var';
-PARAMETER : 'param';
-OTHER : .;
+INTEGER : SIGN? [0-9]+;
+REAL : SIGN* [0-9]* '.' [0-9]* ([eE] [+-]? [0-9]+)?;
+WORD : '"' (~["\r\n] | '""')* '"';
