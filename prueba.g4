@@ -58,7 +58,7 @@ propot_sec : (propot)* propot;
 
 //Conjunto de posibles sentencias
 propot : RETURN expression SEMICOLON
- | funct_sent
+ | funct_sent   //ya podriamos quitar las funciones y procedimientos
  | proc_sent
  | if_sent
  | seleccionar_senten
@@ -109,7 +109,7 @@ function : LF_BRACE propot_sec SEMICOLON RG_BRACE;
 
 //Minimize
 minimize : param_list;
-
+                                 creo que param_list no nos va a recibir funcions del tipo x+y+z.....*....>><< numero, x+y+z.....*....>><< numero
 //Maximize
 maximize : param_list;
 
@@ -118,7 +118,7 @@ restriction : ID simple_exp op=( MINOR_THAN | GREATER_THAN | MINOR | GREATER) si
 
 //Var
 var : ID expresion
-
+                            //las dos tienen la misma forma, asi que parecen equivalentes cunado deberian diferenciarce
 //Parameter
 
 param : ID expresion 
