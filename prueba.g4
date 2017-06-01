@@ -1,4 +1,4 @@
-grammar prueba;
+grammar prueba; //Le podemos poner el nombre del programa ya
 
 //Símbolo inicial
 model
