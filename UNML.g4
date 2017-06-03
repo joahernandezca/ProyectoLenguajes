@@ -27,8 +27,7 @@ assign_statement
 
 inequation_operator
 	: GREATER_THAN
-	| GREATER
-	| MINOR
+	| ASSING
 	| MINOR_THAN
 	;
 
