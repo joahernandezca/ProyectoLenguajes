@@ -75,6 +75,11 @@ class UNMLVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
+    # Visit a parse tree produced by UNMLParser#numeric_operation.
+    def visitNumeric_operation(self, ctx):
+        return self.visitChildren(ctx)
+
+
     # Visit a parse tree produced by UNMLParser#lineal_operator.
     def visitLineal_operator(self, ctx):
         return self.visitChildren(ctx)

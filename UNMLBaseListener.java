@@ -63,18 +63,6 @@ public class UNMLBaseListener implements UNMLListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterProp_solve(UNMLParser.Prop_solveContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitProp_solve(UNMLParser.Prop_solveContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterAssign_statement(UNMLParser.Assign_statementContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -195,6 +183,18 @@ public class UNMLBaseListener implements UNMLListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterNumeric_operation(UNMLParser.Numeric_operationContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitNumeric_operation(UNMLParser.Numeric_operationContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterLineal_operator(UNMLParser.Lineal_operatorContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -310,6 +310,18 @@ public class UNMLBaseListener implements UNMLListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitLogic_operator(UNMLParser.Logic_operatorContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterProp_solve(UNMLParser.Prop_solveContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitProp_solve(UNMLParser.Prop_solveContext ctx) { }
 
 	/**
 	 * {@inheritDoc}

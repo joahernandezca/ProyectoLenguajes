@@ -130,6 +130,15 @@ class UNMLListener(ParseTreeListener):
         pass
 
 
+    # Enter a parse tree produced by UNMLParser#numeric_operation.
+    def enterNumeric_operation(self, ctx):
+        pass
+
+    # Exit a parse tree produced by UNMLParser#numeric_operation.
+    def exitNumeric_operation(self, ctx):
+        pass
+
+
     # Enter a parse tree produced by UNMLParser#lineal_operator.
     def enterLineal_operator(self, ctx):
         pass

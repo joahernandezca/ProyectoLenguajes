@@ -1,6 +1,6 @@
 //UN Modeling Language 
 
-//Crear una estructura que reciba expresiones (inecuaciones < > >= <= == !=).
+//Crear una estructura que reciba expresiones (inecuaciones  >= <= == ).
 //No vamos a tomar funciones y procedimientos.
 //Intentar el árbol con Python
 //Cuidado con el Spanglish
@@ -17,7 +17,7 @@ grammar UNML;
 compilationUnit
 	: MODEL LF_BRACE block RG_BRACE ENDMODEL
 	| MODEL LF_BRACE RG_BRACE ENDMODEL
-	| MODEL lineal_expression ENDMODEL
+	//| MODEL numeric_operation ENDMODEL
 	; 
 
 block
@@ -74,16 +74,22 @@ type_objective
 short_lineal_exp
 	: VAR_ID
 	| numeric_literal VAR_ID
-	| LF_PAREN (numeric_literal aritmetic_operator numeric_literal)* RG_PAREN VAR_ID 
+	|  (numeric_operation)  VAR_ID 
 	| LF_PAREN short_lineal_exp RG_PAREN
 	;
 
 
 lineal_expression
 	: short_lineal_exp (lineal_operator short_lineal_exp)*
-	| LF_PAREN (numeric_literal aritmetic_operator numeric_literal)* RG_PAREN lineal_operator
+	|  (numeric_operation)* lineal_operator 
 	;
 
+numeric_operation
+	: LF_PAREN numeric_operation RG_PAREN
+	| (numeric_literal  aritmetic_operator)+ numeric_operation (aritmetic_operator numeric_literal)*
+	| (numeric_literal  aritmetic_operator numeric_literal)
+	| numeric_operation aritmetic_operator numeric_operation
+	;
 lineal_operator
 	: ADD
 	| MINUS
@@ -113,7 +119,6 @@ aritmetic_expression
 	| numeric_expression
 	| logical_expression
 //	| symbolic_expression
-
 	;
 //	| indexing_expression
 //	| set_expression

@@ -48,8 +48,6 @@ class EvalVisitor(UNMLVisitor):
 			globalDic[str(aux)]=str(aux)
 			#print ctx.VAR_ID().getText()
 		
-		# for i in globalDic:
-		# 	print i
 		return None
 
 
@@ -88,13 +86,15 @@ class EvalVisitor(UNMLVisitor):
 	def visitFunction_statement(self, ctx):
 		global globalDic
 		global simplexDic
-		aux = ctx.ID()
-		globalDic[str(aux)]=[]
-		aux1 = ctx.lineal_expression().getText()
-		globalDic[str(aux)].append(str(aux1))
-		aux2 = ctx.type_objective().getText()
-		globalDic[str(aux)].append(str(aux2))
-		simplexDic['typeM'].append(str(aux2))
+		res,val=visit(ctx.lineal_expression())
+		if res:
+			aux = ctx.ID()
+			globalDic[str(aux)]=[]
+			aux1 = ctx.lineal_expression().getText()
+			globalDic[str(aux)].append(str(aux1))
+			aux2 = ctx.type_objective().getText()
+			globalDic[str(aux)].append(str(aux2))
+			simplexDic['typeM'].append(str(aux2))
 
 		print globalDic
 		print simplexDic
@@ -108,29 +108,67 @@ class EvalVisitor(UNMLVisitor):
 
 	# Visit a parse tree produced by UNMLParser#type_objective.
 	def visitType_objective(self, ctx):
-		return self.visitChildren(ctx)
-
+		if ctx.MAXIMIZE() != None:
+			return ctx.MAXIMIZE().getText()
+		elif ctx.MINIMIZE() != None:
+			return ctx.MINIMIZE.getText()
+		return None
 
 	# Visit a parse tree produced by UNMLParser#short_lineal_exp.
 	def visitShort_lineal_exp(self, ctx):
 		if globalDic.has_key( ctx.VAR_ID()):
 			if ctx.numeric_literal() != None:
-				if ctx.aritmetic_operator() != None:
-					print len(ctx.aritmetic_operator())
-					self.visit(ctx.aritmetic_operator())
-
 				return True, self.visit(ctx.numeric_literal())
+			elif ctx.numeric_operation() != None:
+				return True, self.visit(ctx.numeric_operation())
 			else:
 				return True, 1
 		else:
 			return False, 0
 
+	# Visit a parse tree produced by UNMLParser#lineal_expression.
+	def visitLineal_expression(self, ctx):
+		return self.visitChildren(ctx)
+
+
+
+	# Visit a parse tree produced by UNMLParser#numeric_operation.
+	def visitNumeric_operation(self, ctx):
+		ans = 0
+		op = self.visit(aritmetic_operator)
+		if op == '+':
+			ans = self.visit(ctx.numeric_literal(0)) + self.visit(ctx.numeric_literal(1))
+		elif op == '-':
+			ans = self.visit(ctx.numeric_literal(0)) - self.visit(ctx.numeric_literal(1)):
+		elif op == '*':
+			ans = floatself.visit(ctx.numeric_literal(0)) * self.visit(ctx.numeric_literal(1)):
+		elif op == '/':
+			ans = float(self.visit(ctx.numeric_literal(0))) / float(self.visit(ctx.numeric_literal(1))):
+		elif op == '%':
+			ans = self.visit(ctx.numeric_literal(0)) % self.visit(ctx.numeric_literal(1)):
+		return None
+
 	# Visit a parse tree produced by UNMLParser#lineal_operator.
 	def visitLineal_operator(self, ctx):
+		if ctx.ADD() != None:
+			return ctx.ADD().getText()
+		elif ctx.MINUS() != None:
+			return ctx.MINUS().getText()
 		return None
 
 
 	# Visit a parse tree produced by UNMLParser#aritmetic_operator.
 	def visitAritmetic_operator(self, ctx):
-		print ctx.getText()
-		return ctx.getText()
+		if ctx.ADD() != None:
+			return ctx.ADD().getText()
+		elif ctx.MINUS() != None:
+			return ctx.MINUS().getText()
+		elif ctx.MULT() != None:
+			return ctx.MULT().getText()
+		elif ctx.DIV() != None:
+			return ctx.DIV().getText()
+		elif ctx.MOD() != None:
+			return ctx.MOD().getText()
+		elif ctx.EXP() != None:
+			return ctx.EXP().getText()
+		return None

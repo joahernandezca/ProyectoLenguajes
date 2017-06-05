@@ -52,6 +52,12 @@ public interface UNMLVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitNumeric_literal(UNMLParser.Numeric_literalContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link UNMLParser#numeric_unsing}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitNumeric_unsing(UNMLParser.Numeric_unsingContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link UNMLParser#building_block}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -87,6 +93,12 @@ public interface UNMLVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitLineal_expression(UNMLParser.Lineal_expressionContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link UNMLParser#numeric_operation}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitNumeric_operation(UNMLParser.Numeric_operationContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link UNMLParser#lineal_operator}.
 	 * @param ctx the parse tree
@@ -147,4 +159,10 @@ public interface UNMLVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitLogic_operator(UNMLParser.Logic_operatorContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link UNMLParser#prop_solve}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitProp_solve(UNMLParser.Prop_solveContext ctx);
 }

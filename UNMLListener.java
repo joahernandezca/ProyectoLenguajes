@@ -47,16 +47,6 @@ public interface UNMLListener extends ParseTreeListener {
 	 */
 	void exitProposition(UNMLParser.PropositionContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link UNMLParser#prop_solve}.
-	 * @param ctx the parse tree
-	 */
-	void enterProp_solve(UNMLParser.Prop_solveContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link UNMLParser#prop_solve}.
-	 * @param ctx the parse tree
-	 */
-	void exitProp_solve(UNMLParser.Prop_solveContext ctx);
-	/**
 	 * Enter a parse tree produced by {@link UNMLParser#assign_statement}.
 	 * @param ctx the parse tree
 	 */
@@ -157,6 +147,16 @@ public interface UNMLListener extends ParseTreeListener {
 	 */
 	void exitLineal_expression(UNMLParser.Lineal_expressionContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link UNMLParser#numeric_operation}.
+	 * @param ctx the parse tree
+	 */
+	void enterNumeric_operation(UNMLParser.Numeric_operationContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link UNMLParser#numeric_operation}.
+	 * @param ctx the parse tree
+	 */
+	void exitNumeric_operation(UNMLParser.Numeric_operationContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link UNMLParser#lineal_operator}.
 	 * @param ctx the parse tree
 	 */
@@ -256,4 +256,14 @@ public interface UNMLListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitLogic_operator(UNMLParser.Logic_operatorContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link UNMLParser#prop_solve}.
+	 * @param ctx the parse tree
+	 */
+	void enterProp_solve(UNMLParser.Prop_solveContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link UNMLParser#prop_solve}.
+	 * @param ctx the parse tree
+	 */
+	void exitProp_solve(UNMLParser.Prop_solveContext ctx);
 }
