@@ -6,8 +6,8 @@ param a := 5;
 param a := 35 ;
 
 begin 
-	maximize z1: 2.5X+3Y;    
-	constrain t: (-10)X+(-1)Y, >=817;              
+	maximize z1: -1X+3Y;    
+	constrain t: -10X+-1Y, >=817;              
 end 
 begin
 	minimize z2: 10X+3Y;

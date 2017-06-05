@@ -31,11 +31,9 @@ propositions_sequence
 proposition
 	: (assign_statement)+ (building_block)+ prop_solve
 	;
-prop_solve
-	: SOLVE SEMICOLON
-	;
+
 assign_statement
-	: VARIBLE VAR_ID (inequation_operator numeric_literal)? SEMICOLON
+	: VARIBLE VAR_ID  SEMICOLON
 	| PARAMETER ID ( ALLOCATE numeric_literal )? SEMICOLON 
 	;
 
@@ -46,15 +44,18 @@ inequation_operator
 	;
 
 numeric_literal
+	: (OP=(ADD | MINUS))? numeric_unsing 
+	| ID 
+	;
+
+numeric_unsing
 	: INTEGER
 	| REAL
-	| ID
-	| LF_PAREN(lineal_operator)? numeric_literal RG_PAREN
 	;
 
 
 building_block
-	: DELIMITER_BEGIN function_statement constrain_statement* DELIMITER_END
+	: DELIMITER_BEGIN function_statement constrain_statement+ DELIMITER_END
 	;
 
 function_statement
@@ -190,6 +191,9 @@ logic_operator
 	: AND
 	| OR
 	;
+prop_solve
+	: SOLVE SEMICOLON
+	;
 
 //Comentarios
 COMMENT : ('#' ~[\r\n]*  |  '/*' .*? '*/') -> skip;
@@ -298,7 +302,6 @@ NORMAL : 'normal';
 SUBSTR : 'substr';
 
 //Tipos de dato
-SIGN : '-'| '+';
 VAR_ID : [A-Z_][a-zA-Z_0-9]*;
 ID : [a-z_][a-zA-Z_0-9]*;
 INTEGER : [0-9]+;
