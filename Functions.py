@@ -1,10 +1,10 @@
 import sys
 from cvxopt import matrix, solvers
-
+"""
 simplexDic = {'objFun': [[10., 3.], [0.8, 1.3]],
               'rest': [[[1., 1., 130., '<'], [2.5, 1., 250., '<']], [[1., 1., 130., '<'], [2.5, 1., 250., '<']]],
-              'typeM': ['MAXIMIZE', 'MAXIMIZE']}
-"""
+              'typeM': ['maximize', 'maximize']}
+
 rest= [[1., 1., 130.,'<'],[2.5, 1.,250.,'<'],[10., 3.,695.,'>']]
 funObj = [-10., -3.] # funcion objetivo
 funObj2 = [0.8, 1.3] # funcion objetivo
@@ -25,7 +25,7 @@ def simplex(objFun, const, typeM):
     cols = []
     resultCols = []
     mm = 1
-    if (typeM == 'MAXIMIZE'):
+    if (typeM == 'maximize'):
         mm = -1
 
     for i in xrange(var):
@@ -35,6 +35,9 @@ def simplex(objFun, const, typeM):
             if (const[j][var + 1] == '<'):
                 cols[i].append(const[j][i])
             elif (const[j][var + 1] == '>'):
+                cols[i].append(const[j][i] * -1)
+            elif (const[j][var + 1] == '='):
+                cols[i].append(const[j][i])
                 cols[i].append(const[j][i] * -1)
 
         for j in xrange(var):
@@ -46,6 +49,9 @@ def simplex(objFun, const, typeM):
         if (const[k][var + 1] == '<'):
             resultCols.append(const[k][var])
         elif (const[k][var + 1] == '>'):
+            resultCols.append(const[k][var] * -1)
+        elif (const[j][var + 1] == '='):
+            resultCols.append(const[k][var])
             resultCols.append(const[k][var] * -1)
 
     for k in xrange(var):
@@ -114,12 +120,14 @@ def cohon(aObjFun, matrixConst, aTypeM):
         for j in xrange(numObjFun):
             if (i != j):
                 for k in xrange(r):
-                    solCoh[i].append(simplex(aObjFun[i], matrixConst[i] + [aObjFun[j] + [E[j][k], '>']], 'MAXIMIZE'))
+                    solCoh[i].append(simplex(aObjFun[i], matrixConst[i] + [aObjFun[j] + [E[j][k], '>']], 'maximize'))
     print solCoh
-
-
+"""
 cohon(simplexDic['objFun'], simplexDic['rest'], simplexDic['typeM'])
+"""
 
+def run(Dictionary):
+    cohon(Dictionary['objFun'], Dictionary['rest'], Dictionary['typeM'])
 
 
 
