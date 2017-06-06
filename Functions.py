@@ -1,10 +1,14 @@
 import sys
 from cvxopt import matrix, solvers
-"""
+
 simplexDic = {'objFun': [[10., 3.], [0.8, 1.3]],
               'rest': [[[1., 1., 130., '<'], [2.5, 1., 250., '<']], [[1., 1., 130., '<'], [2.5, 1., 250., '<']]],
               'typeM': ['maximize', 'maximize']}
 
+simplexDic2 = {'objFun': [[-10., 3.], [-1., 3.]],
+               'rest': [[[-3., 3., 817., '>'], [7., 0., 20., '>']], [[-1., -1., 817., '>'], [10., 4., -60., '=']]],
+               'typeM': ['minimize', 'maximize']}
+"""
 rest= [[1., 1., 130.,'<'],[2.5, 1.,250.,'<'],[10., 3.,695.,'>']]
 funObj = [-10., -3.] # funcion objetivo
 funObj2 = [0.8, 1.3] # funcion objetivo
@@ -59,9 +63,10 @@ def simplex(objFun, const, typeM):
 
     solv = []
     sol = solvers.lp(matrix(objFun), matrix(cols), matrix(resultCols))
-    for l in xrange(var):
-        solv.append(float(sol['x'][l]))
-        objFun[l] = objFun[l] * mm
+    if (str(sol['x']) != "None"):
+        for l in xrange(var):
+            solv.append(float(sol['x'][l]))
+            objFun[l] = objFun[l] * mm
 
     # print typeM
     # print cols
@@ -70,7 +75,7 @@ def simplex(objFun, const, typeM):
     # print len(solv)
     # print solv[0]
     # print solv[1]
-    # print (solv)
+    print (solv)
     return solv
 
 
@@ -90,7 +95,16 @@ def cohon(aObjFun, matrixConst, aTypeM):
     maxMin = []
     solCoh = []
     for i in xrange(numObjFun):
-        solObjFun.append(simplex(aObjFun[i], matrixConst[i], aTypeM[i]))
+        tmp = simplex(aObjFun[i], matrixConst[i], aTypeM[i])
+        solObjFun.append(tmp)
+        if (len(tmp) == 0):
+            print ('No simplex solution ' + str(i + 1))
+            print ('Cohon can not execute')
+            sys.exit()
+
+    print aObjFun
+    print solObjFun
+    print matSolObj
 
     for i in xrange(numObjFun):
         matSolObj.append([])
@@ -100,14 +114,10 @@ def cohon(aObjFun, matrixConst, aTypeM):
                 tmp = tmp + aObjFun[i][k] * solObjFun[j][k]
             matSolObj[i].append(tmp)
 
-    # print aObjFun
-    # print solObjFun
-    # print matSolObj
-
     for i in xrange(numObjFun):
         maxMin.append([max(matSolObj[i]), min(matSolObj[i])])
 
-    # print maxMin
+    print maxMin
 
     for i in xrange(numObjFun):
         E.append([])
@@ -122,14 +132,16 @@ def cohon(aObjFun, matrixConst, aTypeM):
                 for k in xrange(r):
                     solCoh[i].append(simplex(aObjFun[i], matrixConst[i] + [aObjFun[j] + [E[j][k], '>']], 'maximize'))
     print solCoh
-"""
-cohon(simplexDic['objFun'], simplexDic['rest'], simplexDic['typeM'])
-"""
+
+
+"""cohon(simplexDic['objFun'],simplexDic['rest'],simplexDic['typeM'])
+  """
+
 
 def run(Dictionary):
     cohon(Dictionary['objFun'], Dictionary['rest'], Dictionary['typeM'])
 
-
+# run(simplexDic2)
 
 
 
