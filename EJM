@@ -7,18 +7,15 @@ param b := 3.5 ;
 
 begin 
 	maximize z1: -1X+3Y;    
-	constrain t: -10X-Y, >=817;              
+	constrain t: -1X-1Y, >=817; 
+	constrain t1: -10X+4Y, = -60;             
 end 
 begin
 	minimize z2: -10X+3Y;
-	constrain t: (-10*45-(25+24)/12)X+3Y, >=817;
+	constrain t3: -3X+3Y, >=817;
+	constrain t4: 7X, >=20;
 end	   
 	solve;
 
 }
-ENDMODEL
-
-
-MODEL
-((25+24)/12)
 ENDMODEL

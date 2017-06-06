@@ -63,7 +63,7 @@ function_statement
 	;
 
 constrain_statement
-	: CONSTRAIN ID TWO_POINTS lineal_expression COMMA inequation_operator numeric_literal (COMMA inequation_operator numeric_literal)* SEMICOLON
+	: CONSTRAIN ID TWO_POINTS lineal_expression COMMA inequation_operator numeric_literal   SEMICOLON
 	;
 
 type_objective
@@ -81,13 +81,12 @@ short_lineal_exp
 
 lineal_expression
 	: short_lineal_exp (lineal_operator short_lineal_exp)*
-	|  (numeric_operation)* lineal_operator 
 	;
 
 numeric_operation
 	: LF_PAREN numeric_operation RG_PAREN
 	| (numeric_literal  aritmetic_operator)+ numeric_operation (aritmetic_operator numeric_literal)*
-	| (numeric_literal  aritmetic_operator numeric_literal)
+	| numeric_literal  aritmetic_operator numeric_literal
 	| numeric_operation aritmetic_operator numeric_operation
 	;
 lineal_operator
